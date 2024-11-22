@@ -52,7 +52,7 @@ export default function SignUp() {
             {/* Left Part */}
             <div className="leftpart w-[50%] flex flex-col justify-center items-center bg-white p-10 shadow-lg">
                 <div className="text-4xl font-mono font-bold mb-4">Create an Account</div>
-                <div className="text-zinc-400 mb-8">Already have an account?<a href="http://localhost:3000/signin" className="ml-2 underline text-zinc-600 hover:text-zinc-900">Sign In</a></div>
+                <div className="text-zinc-400 mb-8">Already have an account?<a href="http://localhost:3000/" className="ml-2 underline text-zinc-600 hover:text-zinc-900">Sign In</a></div>
                 <form onSubmit={handleonSubmit} className="flex flex-col space-y-4 w-full max-w-xs">
                     <label htmlFor="username" className="font-bold font-mono text-lg">Username</label>
                     <input
