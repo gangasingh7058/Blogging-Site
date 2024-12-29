@@ -29,7 +29,7 @@ export default function UserNavbar() {
                     <span className="block h-[2px] bg-black w-0 transition-all duration-300 group-hover:w-full absolute left-0 bottom-0" />
                 </button>
                 <button
-                    onClick={() => handleNavigation('/signin')}
+                    onClick={() => handleNavigation('/')}
                     className="font-mono text-lg text-gray-700 relative group"
                 >
                     Log Out

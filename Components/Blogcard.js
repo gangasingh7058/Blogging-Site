@@ -20,7 +20,7 @@ export default function BlogCard({ author, date, title, content,onClick  }) {
         </div>
 
         {/* Footer */}
-        <div>Footer</div>
+        {/* <div>Footer</div> */}
       </div>
       <div className="flex justify-center items-center align-middle">
         <Image

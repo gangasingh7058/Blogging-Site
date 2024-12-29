@@ -13,7 +13,7 @@ export default function BlogShow_Module({ cid ,setShowBlogModule}) {
                 return;
             }
             try {
-                const response = await axios.get("http://localhost:3000/api/blog/getblog", {
+                const response = await axios.get("/api/blog/getblog", {
                     params: {
                         cid: cid,
                     },

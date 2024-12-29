@@ -27,7 +27,7 @@ export default function NewBlog() {
         
         setLoading(true); // Set loading state to true
         try {
-            const response = await axios.post("http://localhost:3000/api/blog/post", {
+            const response = await axios.post("/api/blog/post", {
                 title: userdata.title,
                 content: userdata.content,
                 userid: userid

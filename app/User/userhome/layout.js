@@ -9,7 +9,7 @@ export default function MyComponent({ children }) {
     const router=useRouter();
 
     function handleonclick(){
-        router.push("http://localhost:3000/User/newblog");
+        router.push("/User/newblog");
     }
 
     return (

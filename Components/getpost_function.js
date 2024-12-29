@@ -3,7 +3,7 @@ import axios from "axios";
 export default async function getposts(userid) {
     let postdata = []; // Initialize postdata as an empty array
     try {
-        const response = await axios.get("http://localhost:3000/api/blog/bulk");
+        const response = await axios.get("/api/blog/bulk");
         
         postdata=response.data.data;
         // console.log(postdata);

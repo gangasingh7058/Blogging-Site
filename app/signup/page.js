@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 
 export default function SignUp() {
@@ -15,6 +16,13 @@ export default function SignUp() {
         password:""
     })
 
+    const [hasLoaded, setHasLoaded] = useState(false);
+    const [isloadingsignup,setisloadingsignup]=useState(false);
+    
+        useEffect(() => {
+            setHasLoaded(true);
+        }, []);
+
     function handleOnChange(e){
         const {name,value}=e.target;
 
@@ -25,9 +33,11 @@ export default function SignUp() {
 
     async function handleonSubmit(e){
         e.preventDefault();
-
+        setisloadingsignup(true);
         try {
-            const response=await axios.post("http://localhost:3000/api/user/signup",userdata)
+
+            
+            const response=await axios.post("/api/user/signup",userdata)
 
             if(!response.data.success){
                 alert("User with Same email already exists")
@@ -42,17 +52,22 @@ export default function SignUp() {
             console.log(error.message);
             
         }
+        setisloadingsignup(false);
     }
 
     
-
+    if(!hasLoaded) return null
 
     return (
         <div className="w-screen h-screen flex">
             {/* Left Part */}
             <div className="leftpart w-[50%] flex flex-col justify-center items-center bg-white p-10 shadow-lg">
                 <div className="text-4xl font-mono font-bold mb-4">Create an Account</div>
-                <div className="text-zinc-400 mb-8">Already have an account?<a href="http://localhost:3000/" className="ml-2 underline text-zinc-600 hover:text-zinc-900">Sign In</a></div>
+                <div className="text-zinc-400 mb-8">Already have an account?
+                    <Link href="/" className="ml-2 underline text-zinc-600 hover:text-zinc-900">
+                        Sign In
+                    </Link>
+                </div>
                 <form onSubmit={handleonSubmit} className="flex flex-col space-y-4 w-full max-w-xs">
                     <label htmlFor="username" className="font-bold font-mono text-lg">Username</label>
                     <input
@@ -71,7 +86,7 @@ export default function SignUp() {
                         className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
                         name="email"
-                        value={userdata.value}
+                        value={userdata.email}
                         onChange={handleOnChange}
                     />
                     <label htmlFor="password" className="font-bold font-mono text-lg">Password</label>
@@ -87,6 +102,7 @@ export default function SignUp() {
                     <button
                         type="submit"
                         className="bg-black text-white rounded-lg py-2 font-semibold hover:bg-blue-600 transition"
+                        disabled={isloadingsignup}
                     >
                         Sign Up
                     </button>
