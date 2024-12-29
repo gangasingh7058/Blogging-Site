@@ -29,7 +29,7 @@ export default function UserHome() {
     // Fetch user posts when the component mounts
     useEffect(() => {
         getUserPosts();
-    }, []); // Empty dependency array means this runs once on mount
+    }); // Empty dependency array means this runs once on mount
 
     function handleOnclick(postid){
         setcid(postid);
