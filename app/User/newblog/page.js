@@ -1,21 +1,30 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { CiCirclePlus } from "react-icons/ci";
 import axios from "axios";
 import { useRouter } from "next/navigation"; // Updated import for Next.js app directory
 
 export default function NewBlog() {
-    const userid=localStorage.getItem("uid");
     const router = useRouter();
-    const [userdata, setuserdata] = useState({
+    const [userdata, setUserdata] = useState({
         title: "",
-        content: ""
+        content: "",
     });
     const [loading, setLoading] = useState(false); // State to handle loading
+    const [userid, setUserid] = useState(null); // State to store user ID from localStorage
+
+    // Retrieve user ID from localStorage on the client side
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const storedUserid = localStorage.getItem("uid");
+            setUserid(storedUserid);
+        }
+    }, []);
 
     function handleOnChange(e) {
         const { name, value } = e.target;
-        setuserdata({ ...userdata, [name]: value });
+        setUserdata({ ...userdata, [name]: value });
     }
 
     async function handleOnSubmit(e) {
@@ -24,21 +33,25 @@ export default function NewBlog() {
             alert("Please fill in all fields."); // Basic validation
             return;
         }
-        
+        if (!userid) {
+            alert("User ID not found. Please log in.");
+            return;
+        }
+
         setLoading(true); // Set loading state to true
         try {
             const response = await axios.post("/api/blog/post", {
                 title: userdata.title,
                 content: userdata.content,
-                userid: userid
+                userid: userid,
             });
             console.log(response.data);
             alert("Blog Created Successfully");
-            router.push("/User/userhome"); // Use relative route
+            router.push("/User/userhome");
         } catch (error) {
             alert("Some Error Occurred");
             console.error(error);
-            setuserdata({ title: "", content: "" });
+            setUserdata({ title: "", content: "" });
         } finally {
             setLoading(false); // Reset loading state
         }
@@ -46,26 +59,28 @@ export default function NewBlog() {
 
     return (
         <div className="mx-[10%] my-8 flex">
-            <div className="h-[60px] flex items-center pr-4 ">
+            <div className="h-[60px] flex items-center pr-4">
                 <div className="mt-2">
-                    <CiCirclePlus 
-                        className={`text-6xl text-zinc-500 ${loading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
+                    <CiCirclePlus
+                        className={`text-6xl text-zinc-500 ${
+                            loading ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+                        }`}
                         onClick={loading ? null : handleOnSubmit} // Disable click if loading
                     />
                 </div>
                 <div className="text-6xl text-zinc-500 pl-2">|</div>
             </div>
             <div className="w-full mt-[-16px]">
-                <form onSubmit={handleOnSubmit}> {/* Attach handleOnSubmit to form */}
-                    <input 
-                        className="w-full h-[100px] text-6xl text-zinc-600 font-mono placeholder:text-6xl placeholder:font-mono placeholder:pl-2 pl-2 border-zinc-500 focus:outline-none focus:border-transparent" 
+                <form onSubmit={handleOnSubmit}>
+                    <input
+                        className="w-full h-[100px] text-6xl text-zinc-600 font-mono placeholder:text-6xl placeholder:font-mono placeholder:pl-2 pl-2 border-zinc-500 focus:outline-none focus:border-transparent"
                         placeholder="Title"
                         name="title"
                         value={userdata.title}
                         onChange={handleOnChange}
                     />
-                    <textarea 
-                        className="w-full h-[450px] text-2xl font-mono mt-4 placeholder:pl-2 pl-2 focus:outline-none focus:border-transparent" 
+                    <textarea
+                        className="w-full h-[450px] text-2xl font-mono mt-4 placeholder:pl-2 pl-2 focus:outline-none focus:border-transparent"
                         placeholder="Tell Your story..."
                         name="content"
                         value={userdata.content}
